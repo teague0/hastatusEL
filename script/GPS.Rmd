@@ -1,0 +1,34 @@
+---
+title: "GPS 2021-2022"
+output: html_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(kableExtra)
+```
+
+## Camila's 2021-2022 Tracking data
+
+Get the date range
+
+```{r }
+path <- "~/ownCloud/projects/hastatusEL/"
+gps <- read_csv(paste0(path, "data/Greater spear-nosed bat (Phyllostomus hastatus) in Bocas del Toro 2021-2022.csv"))
+tz(gps$timestamp) <- "UTC"
+
+
+gps %>% filter(`tag-tech-spec` != "vesper") %>% 
+  group_by(`tag-local-identifier`) %>%
+  summarize(firstday = min(`timestamp`),
+            lastday = max(`timestamp`)) %>% 
+  kable() %>%
+  kable_styling(font_size = 12)
+  
+
+
+```
+
